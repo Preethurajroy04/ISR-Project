@@ -14,14 +14,7 @@ class PreProcessCorpus:
 
         self.text_file = open(Path.DataTextDir, "r", encoding="utf8") # opening the file in read mode
 
-        # declaring docNo and content variables
-
-        self.docNo = ""       # initializing var docNo
-        self.title = ""       # initializing var title
-        self.genre = ""       # initializing var genre
-        self.language = ""    # initializing var language
-        self.country = ""     # initializing var country
-        self.cast = ""        # initializing var cast
+        
 
         return 
 
@@ -31,6 +24,16 @@ class PreProcessCorpus:
         
         casts = ""
         content = ""
+
+        # declaring docNo and content variables
+
+        self.docNo = ""       # initializing var docNo
+        self.title = ""       # initializing var title
+        self.genre = ""       # initializing var genre
+        self.language = ""    # initializing var language
+        self.country = ""     # initializing var country
+        self.cast = ""        # initializing var cast
+        self.keywords = "" 
 
         count = 0
         for line in self.text_file:
@@ -56,6 +59,12 @@ class PreProcessCorpus:
                 
                 self.genre = line.split("<genre>")[1].split("</genre>")[0]    
                 content = content + " " + self.genre 
+
+            if "<keyword>" in line: 
+                # fetching genre from line containing "<genre>"
+                
+                self.keywords = line.split("<keyword>")[1].split("</keyword>")[0]    
+                content = content + " " + self.keywords
 
             if "<language>" in line: 
                 # fetching language from line containing "<language>"
@@ -85,7 +94,9 @@ class PreProcessCorpus:
 
                 if "</doc>" in line:
                     break
-                    
+
+            if line == None:
+                self.text_file.close()      
           
         # print( self.docNo + "|" + self.title + "|" + content)
 
