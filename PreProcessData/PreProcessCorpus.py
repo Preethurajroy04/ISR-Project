@@ -1,31 +1,21 @@
 import Classes.Path as Path
-import re
 
-# Efficiency and memory cost should be paid with extra attention.
-# Essential private methods or variables can be added.
-# Please add comments along with your code.
 
 class PreProcessCorpus:
 
     def __init__(self):
-        # 1. Open the file in Path.DataTextDir.
-        # 2. Make preparation for function nextDocument().
-        # NT: you cannot load the whole corpus into memory!!
 
-        self.text_file = open(Path.DataTextDir, "r", encoding="utf8") # opening the file in read mode
-
-        
+        self.text_file = open(Path.data_path, "r", encoding="utf8")  # opening the file in read mode
 
         return 
 
-    def nextDocument(self):
-        # 1. When called, this API processes one document from corpus, and returns its doc number and content.
-        # 2. When no document left, return null, and close the file.
-        
-        casts = ""
-        content = ""
 
-        # declaring docNo and content variables
+    def parse_document(self):
+
+        '''
+        parsing each document to retrieve neccessary info 
+        needed to build index later
+        '''
 
         self.docNo = ""       # initializing var docNo
         self.title = ""       # initializing var title
@@ -36,11 +26,10 @@ class PreProcessCorpus:
         self.keywords = "" 
 
         count = 0
-        for line in self.text_file:
+        content = ""
 
-            # if "</doc>" in line: 
-            #     # breaks loop if </DOC> tag not found, meaning no more documents left
-            #     break        
+
+        for line in self.text_file:
 
             if "<docid>" in line: 
                 # fetching docNo from line containing "<DOCNO>"
@@ -80,7 +69,6 @@ class PreProcessCorpus:
 
                 
             if "<actor>" in line and count <= 3:
-                # concatenating all lines within a single doc
 
                 # self.cast.append(line.split("<actor>")[1].split("</actor>")[0])   
                 self.cast = line.split("<actor>")[1].split("</actor>")[0]
@@ -92,11 +80,14 @@ class PreProcessCorpus:
                 self.plot = line.split("<plot>")[1].split("</plot>")[0]   
                 content = content + " " + self.plot 
 
+                # breaks loop if </doc> tag found in <plot> line
                 if "</doc>" in line:
                     break
-
+            
+            # if no documents left to process
             if line == None:
                 self.text_file.close()      
+
           
         # print( self.docNo + "|" + self.title + "|" + content)
 

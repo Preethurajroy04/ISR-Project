@@ -1,53 +1,48 @@
-import PreProcessData.preprocess_corpus as PreProcessCorpus
-# # import PreProcessData.StopWordRemover as StopWordRemover
-# import PreProcessData.WordNormalizer as WordNormalizer
-# import PreProcessData.WordTokenizer as WordTokenizer
+import PreProcessData.PreProcessCorpus as PreProcessCorpus
 import Classes.Path as Path
-import datetime
 
- # !!! YOU CANNOT CHANGE ANYTHING IN THIS CLASS !!! This is for INFSCI 2140 in Fall 2022
 
-def PreProcess():
+def doc_preprocess():
 
-    wr = open(Path.ResultHM1, "w", encoding="utf8")
-    doc = []
+    '''
+    pre-process the whole corpus
+    and write into a text file
+    '''
+
+    # intialize result file object
+    result_file_obj = open(Path.result_path, "w", encoding="utf8")
     
-    # Initialize essential objects.
-
+    # intialize PreProcessCorpus class object
     collection = PreProcessCorpus.PreProcessCorpus()
+    doc = []
+
 
     while True:
-        doc = collection.nextDocument()
+        
+        doc = collection.parse_document()
+
         if doc == None or doc == ["", "", ""]:
             break
-
+        
+        # store results returned from parse_document() into variables
         docNo = doc[0]
         title = doc[1]
         content = doc[2]
 
-        wr.write(docNo + "|" + title + "|" + content + "\n")
+        # write info retrieved from the corpus into a pipe delimited file
+        result_file_obj.write(docNo + "|" + title + "|" + content + "\n")
 
-        # print(docNo + "|" + title + "|" + content)
-
-    wr.close()
+    # close the file
+    result_file_obj.close()
         
-    #     normalizer = WordNormalizer.WordNormalizer(content)
-
-    # while True:
-    #     word = normalizer.lowercase()
-    #     if word == None:
-    #         break
-    #     word = normalizer.stopword(word)
-    #     word = normalizer.tokenize(word)
-
-
-    #     # Output the docNo.
-    #     wr.write(docNo+"\n")
-    #     wr.write(normalizer.stem(word) + " ")
-
 
 def main():
-    PreProcess()
+
+    '''
+    call doc_preprocess() 
+    '''
+
+    doc_preprocess()
     
 
 if __name__ == "__main__":

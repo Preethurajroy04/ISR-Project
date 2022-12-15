@@ -1,17 +1,5 @@
-# address of target corpus docset.trectext.
-DataTextDir = "data//input//data.xml"
+# path of data file
+data_path = "data//input//data.xml"
 
-# address of target corpus docset.trecweb.
-DataWebDir = "data//output//docset.trecweb"
-
-# address of stopword list.
-StopwordDir="data//input//stopword.txt"
-
-# uncompleted address of preprocessed corpus.
-ResultHM1="data//result.corpus"
-
-# address of generated Text index file.
-IndexTextDir="data//indextext//"
-
-# address of generated Web index file.
-IndexWebDir="data//indexweb//"
+# path of result file of the preprocessed corpus
+result_path="data//output//result_corpus.txt"
